@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nguyễn Thị Thanh Hiền — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f4f8fb;
+    --surface:#ffffff;
+    --surface-2:#eaf1f7;
+    --cyan:#0090c7;
+    --cyan-deep:#0077b6;
+    --violet:#6c4cff;
+    --text:#101720;
+    --muted:#5b6b7a;
+    --line: rgba(16,23,32,0.08);
+    --line-strong: rgba(0,144,199,0.32);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:'Inter',sans-serif;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--cyan); color:#04101a;}
+
+  #network{ position:fixed; inset:0; z-index:0; pointer-events:none; }
+  .grid-overlay{
+    position:fixed; inset:0; z-index:0; pointer-events:none; opacity:0.35;
+    background-image:
+      linear-gradient(rgba(0,144,199,0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,144,199,0.07) 1px, transparent 1px);
+    background-size:56px 56px;
+    mask-image:radial-gradient(ellipse at 50% 30%, black 0%, transparent 75%);
+  }
+  .vignette{
+    position:fixed; inset:0; z-index:1; pointer-events:none;
+    background:radial-gradient(ellipse at center, transparent 40%, rgba(244,248,251,0.92) 100%);
+  }
+
+  nav{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:22px 6vw;
+    backdrop-filter:blur(14px) saturate(140%);
+    background:rgba(244,248,251,0.55);
+    border-bottom:1px solid var(--line);
+    transition:background .4s ease, padding .4s ease;
+  }
+  nav.scrolled{ padding:14px 6vw; background:rgba(244,248,251,0.85); }
+  .logo{
+    font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:18px;
+    letter-spacing:0.3px; display:flex; align-items:center; gap:10px;
+  }
+  .logo-dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);
+    box-shadow:0 0 12px 2px var(--cyan);}
+  .nav-links{display:flex; gap:2.5vw; list-style:none;}
+  .nav-links a{
+    color:var(--muted); text-decoration:none; font-size:14px; font-weight:500;
+    letter-spacing:0.3px; position:relative; padding:6px 2px;
+    transition:color .3s ease;
+  }
+  .nav-links a::after{
+    content:''; position:absolute; left:0; bottom:0; width:0; height:1px;
+    background:var(--cyan); transition:width .35s cubic-bezier(.4,0,.2,1);
+    box-shadow:0 0 8px var(--cyan);
+  }
+  .nav-links a:hover{color:var(--text);}
+  .nav-links a:hover::after{width:100%;}
+  .nav-links a.active{color:var(--cyan);}
+  .mssv-chip{
+    font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--cyan);
+    letter-spacing:0.5px; border:1px solid var(--line-strong); border-radius:100px;
+    padding:6px 14px; background:rgba(0,144,199,0.08);
+  }
+
+  .hero{
+    position:relative; z-index:2; min-height:100vh;
+    display:flex; flex-direction:column; justify-content:center;
+    padding:0 6vw; max-width:1400px; margin:0 auto;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--cyan);
+    letter-spacing:2px; text-transform:uppercase; margin-bottom:20px;
+    opacity:0; animation:fadeUp .8s ease .2s forwards;
+    display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+  }
+  .eyebrow::before{content:'';width:32px;height:1px;background:var(--cyan);}
+  h1.name{
+    font-family:'Space Grotesk',sans-serif; font-weight:700;
+    font-size:clamp(38px,7.5vw,96px); line-height:1.05; letter-spacing:-1.5px;
+    opacity:0; animation:fadeUp .9s ease .35s forwards;
+  }
+  h1.name span{
+    background:linear-gradient(100deg, var(--text) 25%, var(--cyan) 60%, var(--violet) 95%);
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+  }
+  .hero-sub{
+    font-size:clamp(15px,1.6vw,18px); color:var(--muted); max-width:600px;
+    margin-top:26px; line-height:1.75; font-weight:400;
+    opacity:0; animation:fadeUp .9s ease .5s forwards;
+  }
+  .hero-sub b{color:var(--text); font-weight:600;}
+  .hero-tags{
+    display:flex; gap:10px; margin-top:26px; flex-wrap:wrap;
+    opacity:0; animation:fadeUp .9s ease .58s forwards;
+  }
+  .htag{
+    font-size:12px; font-weight:500; color:var(--cyan); letter-spacing:0.3px;
+    padding:7px 15px; border:1px solid var(--line-strong); border-radius:100px;
+    background:rgba(0,144,199,0.07);
+  }
+  .hero-actions{
+    display:flex; gap:18px; margin-top:38px; flex-wrap:wrap;
+    opacity:0; animation:fadeUp .9s ease .68s forwards;
+  }
+  .btn{
+    font-family:'Inter',sans-serif; font-weight:600; font-size:14px;
+    padding:15px 30px; border-radius:100px; text-decoration:none;
+    display:inline-flex; align-items:center; gap:10px;
+    transition:transform .35s cubic-bezier(.34,1.56,.64,1), box-shadow .35s ease, background .3s ease;
+  }
+  .btn-primary{
+    background:linear-gradient(100deg, var(--cyan), var(--violet));
+    color:#04101a; box-shadow:0 8px 30px -8px rgba(0,144,199,0.35);
+  }
+  .btn-primary:hover{ transform:translateY(-3px) scale(1.03); box-shadow:0 14px 36px -8px rgba(0,144,199,0.5);}
+  .btn-ghost{ border:1px solid var(--line-strong); color:var(--text); background:rgba(255,255,255,0.02); }
+  .btn-ghost:hover{ transform:translateY(-3px); background:rgba(0,144,199,0.09); border-color:var(--cyan); }
+  .scroll-cue{
+    position:absolute; bottom:40px; left:6vw; display:flex; align-items:center; gap:10px;
+    font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); letter-spacing:1.5px;
+    opacity:0; animation:fadeUp .9s ease .9s forwards;
+  }
+  .scroll-cue .line{width:1px; height:36px; background:linear-gradient(var(--cyan), transparent); position:relative; overflow:hidden;}
+  .scroll-cue .line::after{content:'';position:absolute;top:-100%;left:0;width:100%;height:100%;background:var(--violet);animation:cueMove 1.8s ease-in-out infinite;}
+  @keyframes cueMove{0%{top:-100%;}100%{top:100%;}}
+  @keyframes fadeUp{from{opacity:0; transform:translateY(24px);} to{opacity:1; transform:translateY(0);}}
+
+  section{position:relative; z-index:2; padding:140px 6vw; max-width:1400px; margin:0 auto;}
+  .section-head{margin-bottom:60px; max-width:760px;}
+  .tag{
+    font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--cyan);
+    letter-spacing:2px; text-transform:uppercase; display:flex; align-items:center; gap:12px; margin-bottom:18px;
+  }
+  .tag::before{content:'';width:24px;height:1px;background:var(--cyan);}
+  h2.section-title{
+    font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:clamp(30px,4vw,50px);
+    letter-spacing:-1px; line-height:1.1;
+  }
+  .reveal{opacity:0; transform:translateY(40px); transition:opacity .8s ease, transform .8s cubic-bezier(.2,.7,.3,1);}
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  /* ===== Giới thiệu ===== */
+  .about-grid{display:grid; grid-template-columns:0.85fr 1.35fr; gap:60px; align-items:start;}
+  .avatar-frame{
+    position:relative; aspect-ratio:1/1; border-radius:26px; padding:5px;
+    overflow:hidden; isolation:isolate;
+  }
+  .avatar-frame::before{
+    content:''; position:absolute; inset:-60%; z-index:0;
+    background:conic-gradient(from 0deg, var(--cyan), var(--violet), #4fffc3, var(--cyan));
+    animation:spinRing 7s linear infinite;
+  }
+  @keyframes spinRing{ to{ transform:rotate(360deg); } }
+  .avatar-inner{
+    position:relative; z-index:1; width:100%; height:100%; border-radius:22px;
+    overflow:hidden; background:linear-gradient(160deg, var(--surface-2), var(--surface));
+    display:flex; align-items:center; justify-content:center;
+  }
+  .avatar-inner::before{
+    content:''; position:absolute; inset:0; z-index:2; pointer-events:none;
+    background:radial-gradient(circle at 30% 20%, rgba(124,92,255,0.25), transparent 55%);
+  }
+  .avatar-img{
+    position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+    transition:transform .7s cubic-bezier(.2,.8,.3,1);
+  }
+  .avatar-frame:hover .avatar-img{ transform:scale(1.08); }
+  .avatar-fallback{
+    display:flex; align-items:center; justify-content:center; width:100%; height:100%;
+    font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:96px;
+    color:transparent; -webkit-text-stroke:1.4px rgba(0,144,199,0.35);
+  }
+  .goal-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:22px; margin-top:44px;}
+  .about-text p{color:var(--muted); font-size:16px; line-height:1.9; margin-bottom:18px;}
+  .about-text p b{color:var(--text); font-weight:600;}
+  .goal-card{
+    padding:28px 26px; border-radius:18px; background:var(--surface);
+    border:1px solid var(--line); transition:transform .4s cubic-bezier(.2,.8,.3,1), border-color .35s ease, box-shadow .4s ease;
+  }
+  .goal-card:hover{ transform:translateY(-4px); border-color:var(--line-strong); box-shadow:0 24px 48px -26px rgba(0,144,199,0.28); }
+  .goal-card h3{
+    font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:17.5px; margin-bottom:12px;
+    display:flex; align-items:center; gap:10px; color:var(--text);
+  }
+  .goal-card h3 .ic{ font-size:19px; }
+  .goal-card p{ color:var(--muted); font-size:14px; line-height:1.8; margin:0; }
+  .goal-card p + p{ margin-top:12px; }
+
+  /* ===== Bài tập ===== */
+  .ex-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:22px;}
+  .ex-card{
+    position:relative; padding:34px 30px; border-radius:18px;
+    background:linear-gradient(165deg, var(--surface) 0%, rgba(13,22,36,0.4) 100%);
+    border:1px solid var(--line); overflow:hidden;
+    transition:transform .45s cubic-bezier(.2,.8,.3,1), border-color .35s ease, background .35s ease;
+    transform-style:preserve-3d;
+  }
+  .ex-card::before{
+    content:''; position:absolute; inset:0; border-radius:18px; padding:1px;
+    background:linear-gradient(135deg, var(--cyan), transparent 40%);
+    opacity:0; transition:opacity .4s ease; pointer-events:none;
+    -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite:xor; mask-composite:exclude;
+  }
+  .ex-card:hover::before{opacity:1;}
+  .ex-card:hover{ border-color:transparent; }
+  .ex-num{
+    font-family:'JetBrains Mono',monospace; font-size:12.5px; color:var(--cyan);
+    letter-spacing:1px; margin-bottom:20px; display:block;
+  }
+  .ex-title{
+    font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:20px; line-height:1.35;
+    margin-bottom:12px; letter-spacing:-0.2px;
+  }
+  .ex-desc{color:var(--muted); font-size:14px; line-height:1.7;}
+  .ex-glow{
+    position:absolute; width:200px; height:200px; border-radius:50%;
+    background:radial-gradient(circle, rgba(0,144,199,0.14), transparent 70%);
+    top:-70px; right:-70px; pointer-events:none; opacity:0; transition:opacity .4s ease;
+  }
+  .ex-card:hover .ex-glow{opacity:1;}
+
+  /* ===== Tổng kết — timeline ===== */
+  .summary-quote{
+    font-family:'Space Grotesk',sans-serif; font-weight:500; font-size:clamp(20px,2.4vw,29px);
+    line-height:1.5; margin-bottom:56px; letter-spacing:-0.3px; max-width:920px; color:var(--text);
+  }
+  .summary-quote em{font-style:normal; color:var(--cyan);}
+  .timeline{ position:relative; padding-left:36px; }
+  .timeline::before{
+    content:''; position:absolute; left:9px; top:6px; bottom:6px; width:1px;
+    background:linear-gradient(var(--cyan), var(--violet), transparent);
+  }
+  .t-item{ position:relative; padding-bottom:44px; }
+  .t-item:last-child{ padding-bottom:0; }
+  .t-dot{
+    position:absolute; left:-36px; top:2px; width:19px; height:19px; border-radius:50%;
+    background:var(--surface); border:2px solid var(--cyan);
+    box-shadow:0 0 0 5px rgba(0,144,199,0.12);
+    display:flex; align-items:center; justify-content:center; font-size:10px;
+  }
+  .t-item h4{
+    font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:17.5px; margin-bottom:10px;
+    display:flex; align-items:center; gap:10px; color:var(--text);
+  }
+  .t-item p{ color:var(--muted); font-size:15px; line-height:1.8; max-width:820px; }
+
+  footer{
+    position:relative; z-index:2; padding:60px 6vw 40px; text-align:center;
+    border-top:1px solid var(--line); margin-top:40px;
+  }
+  footer .f-name{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:20px; margin-bottom:10px;}
+  footer p{color:var(--muted); font-size:13.5px;}
+
+  @media (max-width:900px){
+    .nav-links{display:none;}
+    .about-grid{grid-template-columns:1fr;}
+    .goal-grid{grid-template-columns:1fr;}
+    .ex-grid{grid-template-columns:1fr;}
+    .avatar-frame{max-width:240px; margin:0 auto;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+  }
+</style>
+</head>
+<body>
+
+<canvas id="network"></canvas>
+<div class="grid-overlay"></div>
+<div class="vignette"></div>
+
+<nav id="nav">
+  <div class="logo"><span class="logo-dot"></span>T. HIỀN</div>
+  <ul class="nav-links">
+    <li><a href="#gioithieu" class="nav-link active">Giới thiệu</a></li>
+    <li><a href="#baitap" class="nav-link">Bài tập</a></li>
+    <li><a href="#tongket" class="nav-link">Tổng kết</a></li>
+  </ul>
+  <!-- MSSV: chèn mã số sinh viên vào đây -->
+  <span class="mssv-chip" id="mssv-value">MSSV: </span>
+</nav>
+
+<section class="hero" id="top">
+  <div class="eyebrow">Portfolio môn học · Nhập môn Công nghệ số &amp; Ứng dụng AI</div>
+  <h1 class="name">Nguyễn Thị<br><span>Thanh Hiền</span></h1>
+  <p class="hero-sub">Sinh viên năm nhất ngành <b>Ngôn ngữ Anh</b>, Trường Đại học Ngoại ngữ —
+    Đại học Quốc gia Hà Nội. Đây là nơi lưu lại hành trình học tập, sản phẩm và những trải nghiệm
+    trong quá trình tiếp cận công nghệ số và trí tuệ nhân tạo.</p>
+  <div class="hero-tags">
+    <span class="htag">Ngôn ngữ Anh</span>
+    <span class="htag">ULIS - ĐHQGHN</span>
+    <span class="htag">Năm nhất</span>
+  </div>
+  <div class="hero-actions">
+    <a href="#baitap" class="btn btn-primary">Xem bài tập →</a>
+    <a href="#tongket" class="btn btn-ghost">Đọc tổng kết</a>
+  </div>
+  <div class="scroll-cue"><div class="line"></div>CUỘN XUỐNG</div>
+</section>
+
+<section id="gioithieu">
+  <div class="section-head reveal">
+    <div class="tag">01 · Giới thiệu</div>
+    <h2 class="section-title">Về mình &amp; định hướng phát triển</h2>
+  </div>
+  <div class="about-grid">
+    <div class="avatar-frame reveal">
+      <div class="avatar-inner">
+        <img class="avatar-img" src="avatar.jpg" alt="Ảnh cá nhân của Nguyễn Thị Thanh Hiền"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+        <span class="avatar-fallback" style="display:none;">TH</span>
+      </div>
+    </div>
+    <div class="about-text reveal">
+      <p>Tôi tên là <b>Nguyễn Thị Thanh Hiền</b>, sinh viên năm nhất ngành Ngôn ngữ Anh, trường
+        Đại học Ngoại Ngữ - Đại học Quốc Gia Hà Nội. Tôi thích học ngoại ngữ, giao lưu, kết bạn
+        và tham gia các hoạt động tình nguyện. Bên cạnh đó, tôi cũng thích nấu ăn và hay xem các
+        video trên TikTok, Instagram để nấu những món ăn ngon mới cho gia đình.</p>
+    </div>
+  </div>
+  <div class="goal-grid">
+    <div class="goal-card reveal">
+      <h3><span class="ic">🎯</span>Mục tiêu học tập và định hướng phát triển cá nhân</h3>
+      <p>Trong quá trình học tập tại trường đại học, mục tiêu của tôi là xây dựng nền tảng kiến
+        thức chuyên môn vững chắc, đồng thời phát triển các kỹ năng mềm như giao tiếp, làm việc
+        nhóm, tư duy phản biện và giải quyết vấn đề. Tôi luôn mong muốn chủ động tiếp cận những
+        kiến thức mới, tích cực tham gia các hoạt động để nâng cao năng lực của bản thân và mở
+        rộng mối quan hệ.</p>
+      <p>Trong tương lai, tôi định hướng trở thành một giáo viên có chuyên môn tốt, có khả năng
+        thích ứng với môi trường làm việc hiện đại và không ngừng học tập để phát triển sự nghiệp.
+        Tôi tin rằng tinh thần cầu tiến và ý thức tự học của mình sẽ là nền tảng giúp mình đạt
+        được những mục tiêu đã đề ra.</p>
+    </div>
+    <div class="goal-card reveal">
+      <h3><span class="ic">📁</span>Mục tiêu của Portfolio</h3>
+      <p>Portfolio này được xây dựng nhằm tổng hợp những sản phẩm học tập và trải nghiệm của bản
+        thân trong suốt quá trình học tập. Đây không chỉ là minh chứng cho sự nỗ lực và tiến bộ
+        của bản thân mà còn là cơ hội để tôi nhìn lại quá trình phát triển, đánh giá những điểm
+        mạnh, nhận ra những hạn chế và xác định phương hướng cải thiện trong tương lai.</p>
+      <p>Đồng thời, portfolio cũng giúp rèn luyện kỹ năng tổng hợp thông tin, trình bày nội dung
+        một cách khoa học và thể hiện sự chuyên nghiệp trong học tập.</p>
+    </div>
+  </div>
+</section>
+
+<section id="baitap">
+  <div class="section-head reveal">
+    <div class="tag">02 · Bài tập</div>
+    <h2 class="section-title">Sáu bài thực hành, theo đúng trình tự</h2>
+  </div>
+  <div class="ex-grid" id="exGrid"></div>
+</section>
+
+<section id="tongket">
+  <div class="section-head reveal">
+    <div class="tag">03 · Tổng kết</div>
+    <h2 class="section-title">Lời kết</h2>
+  </div>
+  <div class="reveal">
+    <div class="timeline">
+      <div class="t-item">
+        <div class="t-dot"></div>
+        <h4>💭 Một hành trình ý nghĩa</h4>
+        <p>Việc hoàn thành portfolio này là một trải nghiệm ý nghĩa đối với tôi. Trong quá trình
+          thực hiện, tôi có cơ hội nhìn lại toàn bộ hành trình học tập, những sản phẩm đã hoàn
+          thành cũng như những bước tiến của bản thân. Tôi nhận ra rằng mỗi bài tập, mỗi dự án
+          và mỗi trải nghiệm đều góp phần giúp tôi trưởng thành hơn về kiến thức, kỹ năng và tư
+          duy trong thời đại bùng nổ công nghệ số và AI như hiện nay.</p>
+      </div>
+      <div class="t-item">
+        <div class="t-dot"></div>
+        <h4>🛠️ Những kỹ năng đã rèn luyện</h4>
+        <p>Thông qua quá trình xây dựng portfolio, tôi đã rèn luyện các kỹ năng quan trọng như tư
+          duy phản biện khi tìm kiếm và chọn lọc thông tin, tổng hợp tài liệu, trình bày nội
+          dung, quản lý thời gian và sử dụng các công cụ AI phục vụ học tập một cách liêm chính.</p>
+      </div>
+      <div class="t-item">
+        <div class="t-dot"></div>
+        <h4>✨ Điều tôi tâm đắc nhất</h4>
+        <p>Điều khiến tôi tâm đắc nhất là việc portfolio không chỉ lưu giữ kết quả học tập mà còn
+          phản ánh quá trình cố gắng và sự tiến bộ của bản thân trong quá trình học môn Nhập môn
+          Công nghệ số và ứng dụng Trí tuệ nhân tạo. Mỗi nội dung được đưa vào đều mang một ý
+          nghĩa riêng và là minh chứng cho những nỗ lực không ngừng của bản thân.</p>
+      </div>
+      <div class="t-item">
+        <div class="t-dot"></div>
+        <h4>⚡ Thách thức đã vượt qua</h4>
+        <p>Tuy nhiên, trong quá trình thực hiện, tôi cũng gặp không ít khó khăn như sắp xếp nội
+          dung sao cho logic, trình bày hình thức một cách khoa học và đầu tư nhiều thời gian để
+          chỉnh sửa, hoàn thiện từng phần. Những thách thức này giúp tôi rèn luyện tính cẩn thận,
+          kiên trì và khả năng tổ chức công việc hiệu quả hơn.</p>
+      </div>
+      <div class="t-item">
+        <div class="t-dot"></div>
+        <h4>🚀 Hy vọng cho chặng đường tiếp theo</h4>
+        <p>Tôi hy vọng portfolio này sẽ trở thành một dấu mốc ghi lại hành trình học tập của bản
+          thân, đồng thời là nguồn động lực để tôi tiếp tục phấn đấu, không ngừng học hỏi và phát
+          triển trong học tập, đặc biệt là trong lĩnh vực công nghệ số.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="f-name">Nguyễn Thị Thanh Hiền</div>
+  <p>Portfolio môn học Nhập môn Công nghệ số &amp; Ứng dụng AI · Cập nhật 2026</p>
+</footer>
+
+<script>
+const nav = document.getElementById('nav');
+const links = document.querySelectorAll('.nav-link');
+const sections = ['gioithieu','baitap','tongket'].map(id=>document.getElementById(id));
+
+window.addEventListener('scroll', ()=>{
+  nav.classList.toggle('scrolled', window.scrollY > 40);
+  let current = sections[0];
+  sections.forEach(s=>{ if(window.scrollY + 140 >= s.offsetTop) current = s; });
+  links.forEach(l=> l.classList.toggle('active', l.getAttribute('href') === '#'+current.id));
+});
+
+links.forEach(link=>{
+  link.addEventListener('click', e=>{
+    e.preventDefault();
+    const target = document.getElementById(link.getAttribute('href').slice(1));
+    window.scrollTo({top: target.offsetTop - 90, behavior:'smooth'});
+  });
+});
+
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+},{threshold:0.15});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+const exercises = [
+  {t:"Thao tác cơ bản với tệp tin và thư mục", d:"Tổ chức, đặt tên, sao lưu và quản lý dữ liệu cá nhân một cách khoa học — nền tảng cho mọi công việc số sau này."},
+  {t:"Tìm kiếm và đánh giá thông tin học thuật", d:"Sử dụng cơ sở dữ liệu học thuật, lọc nguồn uy tín và đánh giá độ tin cậy trước khi trích dẫn."},
+  {t:"Viết Prompt hiệu quả cho các tác vụ học tập", d:"Xây dựng câu lệnh rõ ràng, có ngữ cảnh và tiêu chí để khai thác AI đúng mục đích học tập."},
+  {t:"Sử dụng công cụ hợp tác trực tuyến cho dự án nhóm", d:"Phối hợp tiến độ, phân công và chia sẻ tài liệu nhóm qua các nền tảng cộng tác thời gian thực."},
+  {t:"Sử dụng AI tạo sinh để hỗ trợ sáng tạo nội dung", d:"Kết hợp AI tạo sinh vào quy trình sáng tạo mà vẫn giữ dấu ấn và chất lượng riêng."},
+  {t:"Sử dụng AI có trách nhiệm trong học tập và nghiên cứu", d:"Nhận diện giới hạn, trích dẫn minh bạch và giữ đạo đức học thuật khi ứng dụng AI."},
+];
+const grid = document.getElementById('exGrid');
+exercises.forEach((ex,i)=>{
+  const card = document.createElement('div');
+  card.className = 'ex-card reveal';
+  card.innerHTML = `<div class="ex-glow"></div><span class="ex-num">BÀI ${String(i+1).padStart(2,'0')} / 06</span>
+    <div class="ex-title">${ex.t}</div><div class="ex-desc">${ex.d}</div>`;
+  grid.appendChild(card);
+  io.observe(card);
+
+  card.addEventListener('mousemove', (e)=>{
+    const r = card.getBoundingClientRect();
+    const x = e.clientX - r.left, y = e.clientY - r.top;
+    const rx = ((y / r.height) - 0.5) * -8;
+    const ry = ((x / r.width) - 0.5) * 8;
+    card.style.transform = `perspective(700px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-4px)`;
+    card.querySelector('.ex-glow').style.left = (x-100)+'px';
+    card.querySelector('.ex-glow').style.top = (y-100)+'px';
+  });
+  card.addEventListener('mouseleave', ()=>{ card.style.transform = 'perspective(700px) rotateX(0) rotateY(0)'; });
+});
+
+document.addEventListener('mousemove', (e)=>{
+  const x = (e.clientX / window.innerWidth - 0.5);
+  const y = (e.clientY / window.innerHeight - 0.5);
+  const name = document.querySelector('.name');
+  if(name) name.style.transform = `translate(${x*10}px, ${y*8}px)`;
+});
+
+document.querySelectorAll('.goal-card').forEach(card=>{
+  card.addEventListener('mousemove', (e)=>{
+    const r = card.getBoundingClientRect();
+    const x = e.clientX - r.left, y = e.clientY - r.top;
+    const rx = ((y / r.height) - 0.5) * -4;
+    const ry = ((x / r.width) - 0.5) * 4;
+    card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-4px)`;
+  });
+  card.addEventListener('mouseleave', ()=>{ card.style.transform = 'perspective(900px) rotateX(0) rotateY(0)'; });
+});
+
+// ---------- Animated tech network background ----------
+const canvas = document.getElementById('network');
+const ctx = canvas.getContext('2d');
+let W,H;
+function resize(){ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+resize(); window.addEventListener('resize', resize);
+
+let mouse = {x: -9999, y: -9999};
+window.addEventListener('mousemove', e=>{ mouse.x = e.clientX; mouse.y = e.clientY; });
+
+const N = window.innerWidth < 700 ? 45 : 85;
+const nodes = Array.from({length:N}, ()=>({
+  x: Math.random()*W, y: Math.random()*H,
+  vx: (Math.random()-0.5)*0.25, vy: (Math.random()-0.5)*0.25,
+  r: Math.random()*1.6 + 1
+}));
+const linkDist = 150;
+
+function tick(){
+  ctx.clearRect(0,0,W,H);
+
+  nodes.forEach(n=>{
+    const dx = n.x-mouse.x, dy = n.y-mouse.y;
+    const dist = Math.sqrt(dx*dx+dy*dy);
+    if(dist < 130){
+      const f = (130-dist)/130;
+      n.x += (dx/dist)*f*1.2;
+      n.y += (dy/dist)*f*1.2;
+    }
+    n.x += n.vx; n.y += n.vy;
+    if(n.x < 0 || n.x > W) n.vx *= -1;
+    if(n.y < 0 || n.y > H) n.vy *= -1;
+  });
+
+  for(let i=0;i<nodes.length;i++){
+    for(let j=i+1;j<nodes.length;j++){
+      const a = nodes[i], b = nodes[j];
+      const dx = a.x-b.x, dy = a.y-b.y;
+      const d = Math.sqrt(dx*dx+dy*dy);
+      if(d < linkDist){
+        ctx.strokeStyle = `rgba(0,119,182,${0.16*(1-d/linkDist)})`;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y);
+        ctx.stroke();
+      }
+    }
+  }
+
+  nodes.forEach(n=>{
+    ctx.beginPath();
+    ctx.fillStyle = 'rgba(0,144,199,0.5)';
+    ctx.shadowColor = 'rgba(0,144,199,0.6)';
+    ctx.shadowBlur = 6;
+    ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
+    ctx.fill();
+  });
+
+  requestAnimationFrame(tick);
+}
+requestAnimationFrame(tick);
+</script>
+</body>
+</html>
