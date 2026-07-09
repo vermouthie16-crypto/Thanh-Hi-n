@@ -439,24 +439,22 @@ footer {
     font-family: 'Dancing Script', cursive !important;
     font-size: 26px;
 }
-/* Định hình ô "Xem bài làm" */
 .btn-view-drive {
   display: inline-block;
   margin-top: 15px;
-  padding: 10px 20px;
-  background-color: #ff4a8d; /* Màu hồng neon giống chữ "theo trình tự" của bạn */
+  padding: 8px 16px;
+  background-color: #ff4a8d;
   color: #ffffff;
-  text-decoration: none; /* Bỏ gạch chân mặc định của thẻ a */
-  border-radius: 8px; /* Bo tròn góc nhẹ */
-  font-size: 14px;
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 13px;
   font-weight: bold;
   transition: all 0.3s ease;
-  text-align: center;
+  position: relative; /* Đảm bảo nút nổi lên trên lớp ex-glow */
+  z-index: 5;
 }
 
-/* Hiệu ứng mượt mà khi di chuột vào nút */
 .btn-view-drive:hover {
-  background-color: #e03b77; /* Hồng đậm hơn một chút khi hover */
-  box-shadow: 0 0 12px rgba(255, 74, 141, 0.6); /* Phát sáng nhẹ */
-  transform: translateY(-2px); /* Nút nảy lên nhẹ */
+  background-color: #e03b77;
+  box-shadow: 0 0 10px rgba(255, 74, 141, 0.6);
 }
