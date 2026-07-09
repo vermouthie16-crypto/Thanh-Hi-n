@@ -242,6 +242,16 @@
   }
   .ex-title{ font-size:19px; line-height:1.35; margin-bottom:12px; letter-spacing:-0.2px; }
   .ex-desc{ color:var(--muted); font-size:14px; line-height:1.7; }
+  .ex-link{
+    display:inline-flex; align-items:center; gap:7px; margin-top:18px;
+    font-family:'JetBrains Mono',monospace; font-size:12.5px; font-weight:500; color:var(--cyan);
+    text-decoration:none; padding:9px 16px; border-radius:100px;
+    border:1px solid rgba(109,227,255,0.35); background:rgba(109,227,255,0.06);
+    transition:all .35s cubic-bezier(.4,0,.2,1); position:relative; z-index:1;
+  }
+  .ex-link:hover{ background:linear-gradient(100deg, var(--pink), var(--lavender)); color:#170f2b; border-color:transparent; transform:translateX(3px); }
+  .ex-link svg{ width:13px; height:13px; flex-shrink:0; transition:transform .35s ease; }
+  .ex-link:hover svg{ transform:translateX(2px); }
   .ex-glow{
     position:absolute; width:190px; height:190px; border-radius:50%;
     background:radial-gradient(circle, rgba(180,123,255,0.2), transparent 70%);
@@ -298,15 +308,15 @@
 
 <nav id="nav">
   <div class="logo-group">
-    <div class="logo"><span class="logo-dot"></span>Thanh Hiền</div>
-    <span class="mssv-chip">MSSV:</span>
+    <div class="logo"><span class="logo-dot"></span>T. Hiền</div>
+    <span class="mssv-chip">MSSV: 25040371</span>
   </div>
   <ul class="nav-links">
     <li><a href="#gioithieu" class="nav-link active">Giới thiệu</a></li>
     <li><a href="#baitap" class="nav-link">Bài tập</a></li>
     <li><a href="#tongket" class="nav-link">Tổng kết</a></li>
   </ul>
-  <a href="https://drive.google.com/drive/folders/1EsqVSR2Q7mxYWXagjB-nvLSCiU04Zisi?usp=sharing" target="_blank" rel="noopener" class="nav-drive">
+  <a href="https://drive.google.com/drive/folders/1EsqVSR2Q7mxYWXagjB-nvLSCiU04Zisi?usp=drive_link" target="_blank" rel="noopener" class="nav-drive">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
     Google Drive
   </a>
@@ -454,41 +464,20 @@
 </footer>
 
 <script>
-const exGrid = document.getElementById('exGrid');
+const nav = document.getElementById('nav');
+const links = document.querySelectorAll('.nav-link');
+const sections = ['gioithieu','baitap','tongket'].map(id=>document.getElementById(id));
 
-const exercises = [
-  {
-    t: "Thao tác cơ bản với tệp tin và thư mục", 
-    d: "Tổ chức, đặt tên, sao lưu và quản lý dữ liệu cá nhân một cách khoa học – nền tảng cho mọi công việc số sau này.",
-    link: "https://docs.google.com/document/d/1yfyp2_ak7CWyvXgMu9CQbJbM4JEoFYR4/edit?usp=drive_link&ouid=115701465242001315455&rtpof=true&sd=true"
-  },
-  {
-    t: "Tìm kiếm và đánh giá thông tin học thuật", 
-    d: "Sử dụng cơ sở dữ liệu học thuật, lọc nguồn uy tín và đánh giá độ tin cậy trước khi trích dẫn.",
-    link: "https://docs.google.com/document/d/1bXEGP4owarHOFLNlb6UzkgV4tVbjhuhQ/edit?usp=drive_link&ouid=115701465242001315455&rtpof=true&sd=true"
-  },
-  {
-    t: "Viết Prompt hiệu quả cho các tác vụ học tập", 
-    d: "Xây dựng câu lệnh rõ ràng, có ngữ cảnh và tiêu chí để khai thác AI đúng mục đích học tập.",
-    link: "https://docs.google.com/document/d/1Tszs4XyaYfdjgPv28ZAZ9VCcTnKDVFrh/edit?usp=drive_link&ouid=115701465242001315455&rtpof=true&sd=true"
-  },
-  {
-    t: "Sử dụng công cụ hợp tác trực tuyến cho dự án nhóm", 
-    d: "Phối hợp tiến độ, phân công và chia sẻ tài liệu nhóm qua các nền tảng cộng tác thời gian thực.",
-    link: "https://docs.google.com/document/d/1HLW_ShSs_Na1HVyKd6ToF91zfYRdJJ9A/edit?usp=drive_link&ouid=115701465242001315455&rtpof=true&sd=true"
-  },
-  {
-    t: "Sử dụng AI tạo sinh để hỗ trợ sáng tạo nội dung", 
-    d: "Kết hợp AI tạo sinh vào quy trình sáng tạo mà vẫn giữ dấu ấn và chất lượng riêng.",
-    link: "https://docs.google.com/document/d/1fC6DQsDy7nntj9SpVisUxTrv6JaKQaDQ/edit?usp=drive_link&ouid=115701465242001315455&rtpof=true&sd=true"
-  },
-  {
-    t: "Sử dụng AI có trách nhiệm trong học tập và nghiên cứu", 
-    d: "Nhận diện giới hạn, trích dẫn minh bạch và giữ đạo đức học thuật khi ứng dụng AI.",
-    link: "https://docs.google.com/document/d/1cXKrmLVLGWRqymOpiBGBRKavPEtjKnBT/edit?usp=drive_link&ouid=115701465242001315455&rtpof=true&sd=true"
-  }
-];
-);
+window.addEventListener('scroll', ()=>{
+  nav.classList.toggle('scrolled', window.scrollY > 40);
+  let current = sections[0];
+  sections.forEach(s=>{ if(window.scrollY + 140 >= s.offsetTop) current = s; });
+  links.forEach(l=> l.classList.toggle('active', l.getAttribute('href') === '#'+current.id));
+});
+
+links.forEach(link=>{
+  link.addEventListener('click', e=>{
+    e.preventDefault();
     const target = document.getElementById(link.getAttribute('href').slice(1));
     window.scrollTo({top: target.offsetTop - 90, behavior:'smooth'});
   });
@@ -499,27 +488,25 @@ const io = new IntersectionObserver((entries)=>{
 },{threshold:0.15});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
+const exercises = [
+  {t:"Thao tác cơ bản với tệp tin và thư mục", d:"Tổ chức, đặt tên, sao lưu và quản lý dữ liệu cá nhân một cách khoa học — nền tảng cho mọi công việc số sau này.", link:"https://docs.google.com/document/d/1yfyp2_ak7CWyvXgMu9CQbJbM4JEoFYR4/edit?usp=drive_link&ouid=115701465242001315455&rtpof=true&sd=true"},
+  {t:"Tìm kiếm và đánh giá thông tin học thuật", d:"Sử dụng cơ sở dữ liệu học thuật, lọc nguồn uy tín và đánh giá độ tin cậy trước khi trích dẫn.", link:"https://docs.google.com/document/d/1bXEGP4owarHOFLNlb6UzkgV4tVbjhuhQ/edit?usp=drive_link&ouid=115701465242001315455&rtpof=true&sd=true"},
+  {t:"Viết Prompt hiệu quả cho các tác vụ học tập", d:"Xây dựng câu lệnh rõ ràng, có ngữ cảnh và tiêu chí để khai thác AI đúng mục đích học tập.", link:"https://docs.google.com/document/d/1Tszs4XyaYfdjgPv28ZAZ9VCcTnKDVFrh/edit?usp=drive_link&ouid=115701465242001315455&rtpof=true&sd=true"},
+  {t:"Sử dụng công cụ hợp tác trực tuyến cho dự án nhóm", d:"Phối hợp tiến độ, phân công và chia sẻ tài liệu nhóm qua các nền tảng cộng tác thời gian thực.", link:"https://docs.google.com/document/d/1HLW_ShSs_Na1HVyKd6ToF91zfYRdJJ9A/edit?usp=drive_link&ouid=115701465242001315455&rtpof=true&sd=true"},
+  {t:"Sử dụng AI tạo sinh để hỗ trợ sáng tạo nội dung", d:"Kết hợp AI tạo sinh vào quy trình sáng tạo mà vẫn giữ dấu ấn và chất lượng riêng.", link:"https://docs.google.com/document/d/1fC6DQsDy7nntj9SpVisUxTrv6JaKQaDQ/edit?usp=drive_link&ouid=115701465242001315455&rtpof=true&sd=true"},
+  {t:"Sử dụng AI có trách nhiệm trong học tập và nghiên cứu", d:"Nhận diện giới hạn, trích dẫn minh bạch và giữ đạo đức học thuật khi ứng dụng AI.", link:"https://docs.google.com/document/d/1cXKrmLVLGWRqymOpiBGBRKavPEtjKnBT/edit?usp=drive_link&ouid=115701465242001315455&rtpof=true&sd=true"},
+];
 const grid = document.getElementById('exGrid');
-exercises.forEach((ex, i) => {
+exercises.forEach((ex,i)=>{
   const card = document.createElement('div');
   card.className = 'ex-card reveal';
-  
-  // CHÈN THÊM THẺ <a> VÀO ĐÂY (Ngay sau mô tả ex-desc)
-  card.innerHTML = `
-    <div class="ex-glow"></div>
-    <span class="ex-num">BÀI ${String(i+1).padStart(2, '0')} / 06</span>
-    <div class="ex-title">${ex.t}</div>
-    <div class="ex-desc">${ex.d}</div>
-    
-    <a href="${ex.link}" target="_blank" class="btn-view-drive">
-      Xem bài làm
-    </a>
-  `;
-  
+  card.innerHTML = `<div class="ex-glow"></div><span class="ex-num">BÀI ${String(i+1).padStart(2,'0')} / 06</span>
+    <div class="ex-title">${ex.t}</div><div class="ex-desc">${ex.d}</div>
+    <a href="${ex.link}" target="_blank" rel="noopener" class="ex-link">Xem bài làm
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7V16"/></svg>
+    </a>`;
   grid.appendChild(card);
   io.observe(card);
-  
-  // ... các đoạn card.addEventListener('mousemove'...) phía dưới giữ nguyên nguyên vẹn
 
   card.addEventListener('mousemove', (e)=>{
     const r = card.getBoundingClientRect();
