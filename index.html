@@ -469,8 +469,7 @@ exGrid.innerHTML = exercises.map((exercise, index) => {
       </a>
     </div>
   `;
-}).join('');
-});
+}).join(''); // Chỉ đóng ngoặc tương ứng với .map( và kết thúc bằng .join('')
   
 window.addEventListener('scroll', ()=>{
   nav.classList.toggle('scrolled', window.scrollY > 40);
