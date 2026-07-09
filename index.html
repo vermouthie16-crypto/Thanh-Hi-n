@@ -479,12 +479,36 @@ const io = new IntersectionObserver((entries)=>{
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
 const exercises = [
-  {t:"Thao tác cơ bản với tệp tin và thư mục", d:"Tổ chức, đặt tên, sao lưu và quản lý dữ liệu cá nhân một cách khoa học — nền tảng cho mọi công việc số sau này."},
-  {t:"Tìm kiếm và đánh giá thông tin học thuật", d:"Sử dụng cơ sở dữ liệu học thuật, lọc nguồn uy tín và đánh giá độ tin cậy trước khi trích dẫn."},
-  {t:"Viết Prompt hiệu quả cho các tác vụ học tập", d:"Xây dựng câu lệnh rõ ràng, có ngữ cảnh và tiêu chí để khai thác AI đúng mục đích học tập."},
-  {t:"Sử dụng công cụ hợp tác trực tuyến cho dự án nhóm", d:"Phối hợp tiến độ, phân công và chia sẻ tài liệu nhóm qua các nền tảng cộng tác thời gian thực."},
-  {t:"Sử dụng AI tạo sinh để hỗ trợ sáng tạo nội dung", d:"Kết hợp AI tạo sinh vào quy trình sáng tạo mà vẫn giữ dấu ấn và chất lượng riêng."},
-  {t:"Sử dụng AI có trách nhiệm trong học tập và nghiên cứu", d:"Nhận diện giới hạn, trích dẫn minh bạch và giữ đạo đức học thuật khi ứng dụng AI."},
+  {
+    t: "Thao tác cơ bản với tệp tin và thư mục", 
+    d: "Tổ chức, đặt tên, sao lưu và quản lý dữ liệu cá nhân một cách khoa học – nền tảng cho mọi công việc số sau này.",
+    link: "https://docs.google.com/document/d/1yfyp2_ak7CWyvXgMu9CQbJbM4JEoFYR4/edit?usp=drive_link&ouid=115701465242001315455&rtpof=true&sd=true"
+  },
+  {
+    t: "Tìm kiếm và đánh giá thông tin học thuật", 
+    d: "Sử dụng cơ sở dữ liệu học thuật, lọc nguồn uy tín và đánh giá độ tin cậy trước khi trích dẫn.",
+    link: "https://docs.google.com/document/d/1bXEGP4owarHOFLNlb6UzkgV4tVbjhuhQ/edit?usp=drive_link&ouid=115701465242001315455&rtpof=true&sd=true"
+  },
+  {
+    t: "Viết Prompt hiệu quả cho các tác vụ học tập", 
+    d: "Xây dựng câu lệnh rõ ràng, có ngữ cảnh và tiêu chí để khai thác AI đúng mục đích học tập.",
+    link: "https://docs.google.com/document/d/1Tszs4XyaYfdjgPv28ZAZ9VCcTnKDVFrh/edit?usp=drive_link&ouid=115701465242001315455&rtpof=true&sd=true"
+  },
+  {
+    t: "Sử dụng công cụ hợp tác trực tuyến cho dự án nhóm", 
+    d: "Phối hợp tiến độ, phân công và chia sẻ tài liệu nhóm qua các nền tảng cộng tác thời gian thực.",
+    link: "https://docs.google.com/document/d/1HLW_ShSs_Na1HVyKd6ToF91zfYRdJJ9A/edit?usp=drive_link&ouid=115701465242001315455&rtpof=true&sd=true"
+  },
+  {
+    t: "Sử dụng AI tạo sinh để hỗ trợ sáng tạo nội dung", 
+    d: "Kết hợp AI tạo sinh vào quy trình sáng tạo mà vẫn giữ dấu ấn và chất lượng riêng.",
+    link: "https://docs.google.com/document/d/1fC6DQsDy7nntj9SpVisUxTrv6JaKQaDQ/edit?usp=drive_link&ouid=115701465242001315455&rtpof=true&sd=true"
+  },
+  {
+    t: "Sử dụng AI có trách nhiệm trong học tập và nghiên cứu", 
+    d: "Nhận diện giới hạn, trích dẫn minh bạch và giữ đạo đức học thuật khi ứng dụng AI.",
+    link: "https://docs.google.com/document/d/1cXKrmLVLGWRqymOpiBGBRKavPEtjKnBT/edit?usp=drive_link&ouid=115701465242001315455&rtpof=true&sd=true"
+  }
 ];
 const grid = document.getElementById('exGrid');
 exercises.forEach((ex,i)=>{
