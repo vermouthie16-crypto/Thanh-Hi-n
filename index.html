@@ -456,7 +456,7 @@
 <script>
 const exGrid = document.getElementById('exGrid');
 
-// Đoạn code render của bạn sẽ trông tương tự như thế này, hãy thêm thẻ <a> vào:
+// Dòng 460: Mở ngoặc nhọn { sau mũi tên =>
 exGrid.innerHTML = exercises.map((exercise, index) => {
   return `
     <div class="exercise-card">
@@ -469,7 +469,11 @@ exGrid.innerHTML = exercises.map((exercise, index) => {
       </a>
     </div>
   `;
-}).join(''); // Chỉ đóng ngoặc tương ứng với .map( và kết thúc bằng .join('')
+}).join(''); 
+// ^ CHỖ NÀY CỰC KỲ QUAN TRỌNG: 
+// Dấu } là để đóng cái { của return.
+// Dấu ) là để đóng cái ( của .map(.
+// Tiếp theo là .join('') và kết thúc bằng dấu chấm phẩy ;
   
 window.addEventListener('scroll', ()=>{
   nav.classList.toggle('scrolled', window.scrollY > 40);
