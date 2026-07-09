@@ -470,6 +470,8 @@ exGrid.innerHTML = exercises.map((exercise, index) => {
     </div>
   `;
 }).join('');
+});
+  
 window.addEventListener('scroll', ()=>{
   nav.classList.toggle('scrolled', window.scrollY > 40);
   let current = sections[0];
