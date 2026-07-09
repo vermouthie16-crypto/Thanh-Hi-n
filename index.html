@@ -488,30 +488,7 @@ const exercises = [
     link: "https://docs.google.com/document/d/1cXKrmLVLGWRqymOpiBGBRKavPEtjKnBT/edit?usp=drive_link&ouid=115701465242001315455&rtpof=true&sd=true"
   }
 ];
-exGrid.innerHTML = exercises.map((exercise, index) => {
-  return `
-    <div class="exercise-card">
-      <div class="card-tag">BÀI 0${index + 1} / 06</div>
-      <h3 class="card-title">${exercise.t}</h3>
-      <p class="card-desc">${exercise.d}</p>
-      
-      <a href="${exercise.link}" target="_blank" class="btn-view-drive">
-        Xem bài làm
-      </a>
-    </div>
-  `;
-}).join(''); 
-
-window.addEventListener('scroll', ()=>{
-  nav.classList.toggle('scrolled', window.scrollY > 40);
-  let current = sections[0];
-  sections.forEach(s=>{ if(window.scrollY + 140 >= s.offsetTop) current = s; });
-  links.forEach(l=> l.classList.toggle('active', l.getAttribute('href') === '#'+current.id));
-});
-
-links.forEach(link=>{
-  link.addEventListener('click', e=>{
-    e.preventDefault();
+);
     const target = document.getElementById(link.getAttribute('href').slice(1));
     window.scrollTo({top: target.offsetTop - 90, behavior:'smooth'});
   });
@@ -523,13 +500,26 @@ const io = new IntersectionObserver((entries)=>{
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
 const grid = document.getElementById('exGrid');
-exercises.forEach((ex,i)=>{
+exercises.forEach((ex, i) => {
   const card = document.createElement('div');
   card.className = 'ex-card reveal';
-  card.innerHTML = `<div class="ex-glow"></div><span class="ex-num">BÀI ${String(i+1).padStart(2,'0')} / 06</span>
-    <div class="ex-title">${ex.t}</div><div class="ex-desc">${ex.d}</div>`;
+  
+  // CHÈN THÊM THẺ <a> VÀO ĐÂY (Ngay sau mô tả ex-desc)
+  card.innerHTML = `
+    <div class="ex-glow"></div>
+    <span class="ex-num">BÀI ${String(i+1).padStart(2, '0')} / 06</span>
+    <div class="ex-title">${ex.t}</div>
+    <div class="ex-desc">${ex.d}</div>
+    
+    <a href="${ex.link}" target="_blank" class="btn-view-drive">
+      Xem bài làm
+    </a>
+  `;
+  
   grid.appendChild(card);
   io.observe(card);
+  
+  // ... các đoạn card.addEventListener('mousemove'...) phía dưới giữ nguyên nguyên vẹn
 
   card.addEventListener('mousemove', (e)=>{
     const r = card.getBoundingClientRect();
