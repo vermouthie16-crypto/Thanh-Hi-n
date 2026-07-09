@@ -454,10 +454,22 @@
 </footer>
 
 <script>
-const nav = document.getElementById('nav');
-const links = document.querySelectorAll('.nav-link');
-const sections = ['gioithieu','baitap','tongket'].map(id=>document.getElementById(id));
+const exGrid = document.getElementById('exGrid');
 
+// Đoạn code render của bạn sẽ trông tương tự như thế này, hãy thêm thẻ <a> vào:
+exGrid.innerHTML = exercises.map((exercise, index) => {
+  return `
+    <div class="exercise-card">
+      <div class="card-tag">BÀI 0${index + 1} / 06</div>
+      <h3 class="card-title">${exercise.t}</h3>
+      <p class="card-desc">${exercise.d}</p>
+      
+      <a href="${exercise.link}" target="_blank" class="btn-view-drive">
+        Xem bài làm
+      </a>
+    </div>
+  `;
+}).join('');
 window.addEventListener('scroll', ()=>{
   nav.classList.toggle('scrolled', window.scrollY > 40);
   let current = sections[0];
