@@ -456,45 +456,6 @@
 <script>
 const exGrid = document.getElementById('exGrid');
 
-// Dòng 460: Mở ngoặc nhọn { sau mũi tên =>
-exGrid.innerHTML = exercises.map((exercise, index) => {
-  return `
-    <div class="exercise-card">
-      <div class="card-tag">BÀI 0${index + 1} / 06</div>
-      <h3 class="card-title">${exercise.t}</h3>
-      <p class="card-desc">${exercise.d}</p>
-      
-      <a href="${exercise.link}" target="_blank" class="btn-view-drive">
-        Xem bài làm
-      </a>
-    </div>
-  `;
-}).join(''); 
-// ^ CHỖ NÀY CỰC KỲ QUAN TRỌNG: 
-// Dấu } là để đóng cái { của return.
-// Dấu ) là để đóng cái ( của .map(.
-// Tiếp theo là .join('') và kết thúc bằng dấu chấm phẩy ;
-  
-window.addEventListener('scroll', ()=>{
-  nav.classList.toggle('scrolled', window.scrollY > 40);
-  let current = sections[0];
-  sections.forEach(s=>{ if(window.scrollY + 140 >= s.offsetTop) current = s; });
-  links.forEach(l=> l.classList.toggle('active', l.getAttribute('href') === '#'+current.id));
-});
-
-links.forEach(link=>{
-  link.addEventListener('click', e=>{
-    e.preventDefault();
-    const target = document.getElementById(link.getAttribute('href').slice(1));
-    window.scrollTo({top: target.offsetTop - 90, behavior:'smooth'});
-  });
-});
-
-const io = new IntersectionObserver((entries)=>{
-  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
-},{threshold:0.15});
-document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-
 const exercises = [
   {
     t: "Thao tác cơ bản với tệp tin và thư mục", 
@@ -527,6 +488,40 @@ const exercises = [
     link: "https://docs.google.com/document/d/1cXKrmLVLGWRqymOpiBGBRKavPEtjKnBT/edit?usp=drive_link&ouid=115701465242001315455&rtpof=true&sd=true"
   }
 ];
+exGrid.innerHTML = exercises.map((exercise, index) => {
+  return `
+    <div class="exercise-card">
+      <div class="card-tag">BÀI 0${index + 1} / 06</div>
+      <h3 class="card-title">${exercise.t}</h3>
+      <p class="card-desc">${exercise.d}</p>
+      
+      <a href="${exercise.link}" target="_blank" class="btn-view-drive">
+        Xem bài làm
+      </a>
+    </div>
+  `;
+}).join(''); 
+
+window.addEventListener('scroll', ()=>{
+  nav.classList.toggle('scrolled', window.scrollY > 40);
+  let current = sections[0];
+  sections.forEach(s=>{ if(window.scrollY + 140 >= s.offsetTop) current = s; });
+  links.forEach(l=> l.classList.toggle('active', l.getAttribute('href') === '#'+current.id));
+});
+
+links.forEach(link=>{
+  link.addEventListener('click', e=>{
+    e.preventDefault();
+    const target = document.getElementById(link.getAttribute('href').slice(1));
+    window.scrollTo({top: target.offsetTop - 90, behavior:'smooth'});
+  });
+});
+
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+},{threshold:0.15});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
 const grid = document.getElementById('exGrid');
 exercises.forEach((ex,i)=>{
   const card = document.createElement('div');
